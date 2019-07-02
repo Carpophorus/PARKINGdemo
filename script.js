@@ -78,7 +78,7 @@
             function(response, status) {
                 $(".jconfirm").remove();
                 var date = new Date(response.last_change * 1000);
-                var dateString = '' + date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate() + '. ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                var dateString = '' + date.getFullYear() + '.' + (date.getMonth() + 1).slice(-2) + '.' + date.getDate().slice(-2) + '. ' + date.getHours().slice(-2) + ':' + date.getMinutes().slice(-2) + ':' + date.getSeconds().slice(-2);
                 $.confirm({
                     title: 'MESTO ' + idSpace,
                     content: 'Kompanija: ...<br>Telefon: ...<br><br>' + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
