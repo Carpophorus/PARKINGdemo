@@ -72,8 +72,30 @@
     let apiRoot = 'https://api.parking-pilot.com/';
     let apiKey = '?api_key=4B160CD3C5BD53B146571C440F11D1CB';
 
-    P.getFullStatus = function(idSensor) {
-        //
+    P.getFullStatus = function(idSensor, idSpace) {
+        sendGetRequest(
+            apiRoot + 'parkingspaces/' + idSensor + '/status' + apiKey,
+            function(response, status) {
+                $(".jconfirm").remove();
+                var date = new Date(response.last_change * 1000);
+                var dateString = '' + date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate() + '. ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+                $.confirm({
+                    title: 'MESTO ' + idSpace,
+                    content: 'Kompanija: ...<br>Telefon: ...<br><br>' + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
+                    theme: 'supervan',
+                    backgroundDismiss: 'true',
+                    buttons: {
+                    ok: {
+                        text: 'ОК',
+                        btnClass: '',
+                        keys: ['enter'],
+                        action: function() {}
+                    }
+                    }
+                });
+            },
+            true, null
+        );
     };
 
     retrieveStatuses = function(idLot) {
@@ -86,22 +108,22 @@
                 var array = response.sort(function(a, b) { return a.xml_id - b.xml_id; });
                 var html = '';
                 for(var i = 0; i < 9; i++)
-                    html += '<div class="v ' + ((i !== 1 && i !== 5) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + ((i !== 1 && i !== 5) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<br>';
                 for(var s = 0; s < 9; s++)
                     html += '<div class="v-space"></div>';
                 html += '<br>';
                 for(i = 16; i > 11; i--)
-                    html += '<div class="v ' + ((i !== 16) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + ((i !== 16) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 for(s = 0; s < 2; s++)
                     html += '<div class="v-space"></div>';
                 for(i = 10; i > 8; i--)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<br><div class="square-space"></div>';
                 for(i = 17; i < 19; i++)
-                    html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<div class="h-space"></div>';
-                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[11].id + ');">' + array[11].xml_id + '</div>';
+                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[11].id + ', ' + array[11].xml_id + ');">' + array[11].xml_id + '</div>';
                 $('.parking').html(html);
             },
             true, null
