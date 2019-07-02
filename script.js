@@ -91,17 +91,17 @@
                 for(var s = 0; s < 9; s++)
                     html += '<div class="v-space"></div>';
                 html += '<br>';
-                for(i = 17; i > 12; i--)
+                for(i = 16; i > 11; i--)
                     html += '<div class="v ' + ((i !== 17) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
                 for(s = 0; s < 2; s++)
                     html += '<div class="v-space"></div>';
-                for(i = 11; i > 9; i--)
+                for(i = 10; i > 8; i--)
                     html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
                 html += '<br><div class="square-space"></div>';
-                for(i = 18; i < 20; i++)
+                for(i = 17; i < 19; i++)
                     html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
                 html += '<div class="h-space"></div>';
-                html += '<div class="h ' + (array[12].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[12].id + ');">' + array[12].xml_id + '</div>';
+                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[11].id + ');">' + array[11].xml_id + '</div>';
                 $('.parking').html(html);
             },
             true, null
