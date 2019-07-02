@@ -76,7 +76,7 @@
             function(response, status) {
                 console.log(response);
                 console.log(response.sort(function(a, b) { return a.xml_id - b.xml_id; }));
-                setTimeout(retrieveStatuses(idLot), 10000);
+                //setTimeout(retrieveStatuses(idLot), 10000);
             },
             true, null
         );
