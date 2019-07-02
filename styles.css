@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    text-align: center;
+    padding: 50px 0;
+    background: #ddd;
+}
+
+.parking {
+    display: inline-block;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.v, .h {
+    float: left;
+    text-align: center;
+    background: #888;
+    border: 1px solid #ddd;
+    transition: opacity ease .4s;
+    box-sizing: border-box;
+    color: #ddd;
+    font-family: 'Russo One', sans-serif;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.v span, .h span {
+    opacity: 1 !important;
+}
+
+.v:hover, .h:hover {
+    cursor: pointer;
+    opacity: .75;
+}
+
+.v {
+    width: 100px;
+    height: 200px;
+    line-height: 200px;
+}
+
+.h {
+    width: 200px;
+    height: 100px;
+    line-height: 100px;
+}
+
+.v-space, .h-space, .square-space {
+    float: left;
+    background: transparent !important;
+    color: transparent !important;
+}
+
+.v-space {
+    width: 100px;
+    height: 200px;
+}
+
+.h-space {
+    width: 200px;
+    height: 100px;
+}
+
+.square-space {
+    width: 100px;
+    height: 100px;
+}
+
+.occupied {
+    background: #c03;
+}
+
+.free {
+    background: #0c3;
+}
