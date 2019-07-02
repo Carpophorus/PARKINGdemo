@@ -84,7 +84,7 @@
 
     sendGetRequest(
         apiRoot + 'parkinglots' + apiKey,
-        function(reponse, status) {
+        function(response, status) {
             retrieveStatuses(response[0].id);
         },
         true, null
