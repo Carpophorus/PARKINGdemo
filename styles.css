@@ -74,3 +74,8 @@ body {
 .free {
     background: #0c3;
 }
+
+.jconfirm-content {
+    font-size: 1.3em;
+    font-family: 'Russo One', sans-serif;
+}
