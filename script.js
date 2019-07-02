@@ -86,13 +86,13 @@
                 var array = response.sort(function(a, b) { return a.xml_id - b.xml_id; });
                 var html = '';
                 for(var i = 0; i < 9; i++)
-                    html += '<div class="v ' + ((i !== 2 && i !== 6) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + ((i !== 1 && i !== 5) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
                 html += '<br>';
                 for(var s = 0; s < 9; s++)
                     html += '<div class="v-space"></div>';
                 html += '<br>';
                 for(i = 16; i > 11; i--)
-                    html += '<div class="v ' + ((i !== 17) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + ((i !== 16) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ');">' + array[i].xml_id + '</div>';
                 for(s = 0; s < 2; s++)
                     html += '<div class="v-space"></div>';
                 for(i = 10; i > 8; i--)
