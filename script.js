@@ -84,7 +84,7 @@
                 var dateString = '' + date.getFullYear() + '.' + ('0' + (date.getMonth() + 1)).slice(-2) + '.' + ('0' + date.getDate()).slice(-2) + '. ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
                 $.confirm({
                     title: 'MESTO ' + idSpace,
-                    content: (idSpace > 9 ? `<br><img id="snapshot" src="` + (idSpace > 12 ? leftCam : rightCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace > 12 ? leftCam : rightCam) + `');}, 2000);"><br>` : ``) + `<br>Kompanija: ...<br>Telefon: ...<br>` + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
+                    content: `<br><img id="snapshot" src="` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 17 ? rightCam : leftCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 17 ? rightCam : leftCam) + `');}, 2000);"><br>` + `<br>Kompanija: ...<br>Telefon: ...<br>` + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
