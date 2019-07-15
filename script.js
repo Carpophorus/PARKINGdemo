@@ -106,13 +106,9 @@
             mostRecentResponse = response;
             return;
         }
-
-        console.log(response);
-
         for (var i = 0; i < mostRecentResponse.length; i++)
             if (mostRecentResponse[i].occupied == false && response[i].occupied == true) {
                 //PlaySound("beep");
-                console.log('Neko je upravo zauzeo mesto ' + response[i].xml_id + '!');
                 $.confirm({
                     title: '<span class="alert">MESTO ' + response[i].xml_id + '</span>',
                     content: '<span class="alert">Neko je upravo zauzeo mesto ' + response[i].xml_id + '!</span>',
@@ -132,7 +128,6 @@
                 //$('.jconfirm.jconfirm-supervan .jconfirm-bg:has(span.alert)').addClass('has-alert');
             } else if (mostRecentResponse[i].occupied == true && response[i].occupied == false) {
                 //PlaySound("beep"); //clink
-                console.log('Neko je upravo oslobodio mesto ' + response[i].xml_id + '!');
                 $.confirm({
                     title: '<span class="notification">MESTO ' + response[i].xml_id + '</span>',
                     content: '<span class="notification">Neko je upravo oslobodio mesto ' + response[i].xml_id + '.</span>',
@@ -151,7 +146,6 @@
                     $('.jconfirm.jconfirm-supervan .jconfirm-bg').addClass('has-notification');
                 //$('.jconfirm.jconfirm-supervan .jconfirm-bg:has(span.notification)').addClass('has-notification');
             }
-
         mostRecentResponse = response;
     };
 
@@ -159,7 +153,7 @@
         sendGetRequest(
             apiRoot + 'parkinglots/' + idLot + '/parkingspaces' + apiKey,
             function(response, status) {
-                setTimeout(function() { retrieveStatuses(idLot); }, 10000);
+                setTimeout(function() { retrieveStatuses(idLot); }, 5000);
                 var array = response.sort(function(a, b) { return a.xml_id - b.xml_id; });
                 processResponse(array);
                 var html = '';
