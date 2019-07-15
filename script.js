@@ -1,6 +1,12 @@
 (function(global) {
 
     var P = {};
+    var mostRecentResponse = null;
+
+    let apiRoot = 'https://api.parking-pilot.com/';
+    let apiKey = '?api_key=4B160CD3C5BD53B146571C440F11D1CB';
+    let leftCam = 'http://10.0.16.46/jpg/image.jpg';
+    let rightCam = 'http://10.0.16.45/jpg/image.jpg';
 
     getRequestObject = function() {
         if (window.XMLHttpRequest) {
@@ -69,9 +75,6 @@
         }
     };
 
-    let apiRoot = 'https://api.parking-pilot.com/';
-    let apiKey = '?api_key=4B160CD3C5BD53B146571C440F11D1CB';
-
     P.getFullStatus = function(idSensor, idSpace) {
         sendGetRequest(
             apiRoot + 'parkingspaces/' + idSensor + '/status' + apiKey,
@@ -81,7 +84,7 @@
                 var dateString = '' + date.getFullYear() + '.' + ('0' + (date.getMonth() + 1)).slice(-2) + '.' + ('0' + date.getDate()).slice(-2) + '. ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
                 $.confirm({
                     title: 'MESTO ' + idSpace,
-                    content: 'Kompanija: ...<br>Telefon: ...<br><br>' + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
+                    content: (idSpace > 9 ? `<br><img id="snapshot" src="` + (idSpace > 12 ? leftCam : rightCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace > 12 ? leftCam : rightCam) + `');}, 2000);"><br>` : ``) + `<br>Kompanija: ...<br>Telefon: ...<br>` + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -98,23 +101,76 @@
         );
     };
 
+    processResponse = function(response) {
+        if (mostRecentResponse == null) {
+            mostRecentResponse = response;
+            return;
+        }
+
+        console.log(response);
+
+        for (var i = 0; i < mostRecentResponse.length; i++)
+            if (mostRecentResponse[i].occupied == false && response[i].occupied == true) {
+                //PlaySound("beep");
+                console.log('Neko je upravo zauzeo mesto ' + response[i].xml_id + '!');
+                $.confirm({
+                    title: '<span class="alert">MESTO ' + response[i].xml_id + '</span>',
+                    content: '<span class="alert">Neko je upravo zauzeo mesto ' + response[i].xml_id + '!</span>',
+                    theme: 'supervan',
+                    backgroundDismiss: 'true',
+                    buttons: {
+                    ok: {
+                        text: 'ОК',
+                        btnClass: '',
+                        keys: ['enter'],
+                        action: function() {}
+                    }
+                    }
+                });
+                if ($('.jconfirm.jconfirm-supervan .jconfirm-bg').find('.alert').length != 0)
+                    $('.jconfirm.jconfirm-supervan .jconfirm-bg').addClass('has-alert');
+                //$('.jconfirm.jconfirm-supervan .jconfirm-bg:has(span.alert)').addClass('has-alert');
+            } else if (mostRecentResponse[i].occupied == true && response[i].occupied == false) {
+                //PlaySound("beep"); //clink
+                console.log('Neko je upravo oslobodio mesto ' + response[i].xml_id + '!');
+                $.confirm({
+                    title: '<span class="notification">MESTO ' + response[i].xml_id + '</span>',
+                    content: '<span class="notification">Neko je upravo oslobodio mesto ' + response[i].xml_id + '.</span>',
+                    theme: 'supervan',
+                    backgroundDismiss: 'true',
+                    buttons: {
+                    ok: {
+                        text: 'ОК',
+                        btnClass: '',
+                        keys: ['enter'],
+                        action: function() {}
+                    }
+                    }
+                });
+                if ($('.jconfirm.jconfirm-supervan .jconfirm-bg').find('.notification').length != 0)
+                    $('.jconfirm.jconfirm-supervan .jconfirm-bg').addClass('has-notification');
+                //$('.jconfirm.jconfirm-supervan .jconfirm-bg:has(span.notification)').addClass('has-notification');
+            }
+
+        mostRecentResponse = response;
+    };
+
     retrieveStatuses = function(idLot) {
         sendGetRequest(
             apiRoot + 'parkinglots/' + idLot + '/parkingspaces' + apiKey,
             function(response, status) {
-                //console.log(response);
-                //console.log(response.sort(function(a, b) { return a.xml_id - b.xml_id; }));
-                //setTimeout(retrieveStatuses(idLot), 10000);
+                setTimeout(function() { retrieveStatuses(idLot); }, 10000);
                 var array = response.sort(function(a, b) { return a.xml_id - b.xml_id; });
+                processResponse(array);
                 var html = '';
                 for(var i = 0; i < 9; i++)
-                    html += '<div class="v ' + ((i !== 1 && i !== 5) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<br>';
                 for(var s = 0; s < 9; s++)
                     html += '<div class="v-space"></div>';
                 html += '<br>';
                 for(i = 16; i > 11; i--)
-                    html += '<div class="v ' + ((i !== 16) ? (array[i].occupied === true ? 'occupied' : 'free') : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 for(s = 0; s < 2; s++)
                     html += '<div class="v-space"></div>';
                 for(i = 10; i > 8; i--)

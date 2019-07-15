@@ -79,3 +79,19 @@ body {
     font-size: 1.3em;
     font-family: 'Russo One', sans-serif;
 }
+
+.jconfirm.jconfirm-supervan .jconfirm-box div.jconfirm-title-c>* {
+    padding-bottom: 0 !important;
+}
+
+#snapshot {
+    transition: width .5s ease;
+}
+
+.has-alert {
+    background-color: #c03;
+}
+
+.has-notification {
+    background-color: #0c3;
+}
