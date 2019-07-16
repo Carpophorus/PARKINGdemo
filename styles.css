@@ -10,7 +10,7 @@ body {
     left: 0;
     right: 0;
     margin: auto;
-    transform: perspective(200px) rotateX(20);
+    transform: perspective(1000px) rotateX(30deg);
 }
 
 .v, .h {
