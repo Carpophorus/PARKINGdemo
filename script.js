@@ -153,7 +153,8 @@
         sendGetRequest(
             apiRoot + 'parkinglots/' + idLot + '/parkingspaces' + apiKey,
             function(response, status) {
-                setTimeout(function() { retrieveStatuses(idLot); }, 5000);
+                setTimeout(function() { retrieveStatuses(idLot); }, 2000);
+                console.log('ping');
                 var array = response.sort(function(a, b) { return a.xml_id - b.xml_id; });
                 processResponse(array);
                 var html = '';
