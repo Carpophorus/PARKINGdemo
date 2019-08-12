@@ -76,6 +76,10 @@ body {
     background: #0c3;
 }
 
+.transitioning {
+    animation: colorPulse 2s infinite alternate;
+}
+
 .jconfirm-content {
     font-size: 1.3em;
     font-family: 'Russo One', sans-serif;
@@ -95,4 +99,11 @@ body {
 
 .has-notification {
     background-color: #0c3;
+}
+
+@keyframes colorPulse {
+    0% {background-color: #0c3;}
+    20% {background-color: #0c3;}
+    80% {background-color: #c03;}
+    100% {background-color: #c03;}
 }

@@ -108,10 +108,9 @@
         }
         for (var i = 0; i < mostRecentResponse.length; i++)
             if (mostRecentResponse[i].occupied == false && response[i].occupied == true) {
-                //PlaySound("beep");
                 $.confirm({
                     title: '<span class="alert">MESTO ' + response[i].xml_id + '</span>',
-                    content: '<span class="alert">Neko je upravo zauzeo mesto ' + response[i].xml_id + '!</span>',
+                    content: '<embed src="beep.wav" autostart="false" volume="200" width="0" height="0" id="beep" enablejavascript="true"><span class="alert">Neko je upravo zauzeo mesto ' + response[i].xml_id + '!</span>',
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -127,10 +126,9 @@
                     $('.jconfirm.jconfirm-supervan .jconfirm-bg').addClass('has-alert');
                 //$('.jconfirm.jconfirm-supervan .jconfirm-bg:has(span.alert)').addClass('has-alert');
             } else if (mostRecentResponse[i].occupied == true && response[i].occupied == false) {
-                //PlaySound("beep"); //clink
                 $.confirm({
                     title: '<span class="notification">MESTO ' + response[i].xml_id + '</span>',
-                    content: '<span class="notification">Neko je upravo oslobodio mesto ' + response[i].xml_id + '.</span>',
+                    content: '<embed src="clink.wav" autostart="false" volume="200" width="0" height="0" id="clink" enablejavascript="true"><span class="notification">Neko je upravo oslobodio mesto ' + response[i].xml_id + '.</span>',
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -159,22 +157,22 @@
                 processResponse(array);
                 var html = '';
                 for(var i = 0; i < 9; i++)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<br>';
                 for(var s = 0; s < 9; s++)
                     html += '<div class="v-space"></div>';
                 html += '<br>';
                 for(i = 16; i > 11; i--)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 for(s = 0; s < 2; s++)
                     html += '<div class="v-space"></div>';
                 for(i = 10; i > 8; i--)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<br><div class="square-space"></div>';
                 for(i = 17; i < 19; i++)
-                    html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id + ');">' + array[i].xml_id + '</div>';
                 html += '<div class="h-space"></div>';
-                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + '" onclick="$P.getFullStatus(' + array[11].id + ', ' + array[11].xml_id + ');">' + array[11].xml_id + '</div>';
+                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + (array[11].occupied != array[11].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.getFullStatus(' + array[11].id + ', ' + array[11].xml_id + ');">' + array[11].xml_id + '</div>';
                 $('.parking').html(html);
             },
             true, null
