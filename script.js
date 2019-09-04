@@ -3,6 +3,32 @@
     var P = {};
     var mostRecentResponse = null;
 
+    let srp = {
+        error: 'GREŠKA!',
+        errorDesc: 'Desila se greška u sistemu, pokušajte ponovo.',
+        spot: 'MESTO ',
+        occupiedTxt: 'Neko je upravo zauzeo mesto ',
+        availableTxt: 'Neko je upravo oslobodio mesto ',
+        companyPhone: '<br>Kompanija: ...<br>Telefon: ...<br>',
+        occupied: 'Zauzeto',
+        available: 'Slobodno',
+        since: ' od '
+    };
+
+    let eng = {
+        error: 'ERROR!',
+        errorDesc: 'A system error has occured, please try again.',
+        spot: 'SPOT #',
+        occupiedTxt: 'Someone has occupied the spot #',
+        availableTxt: 'Someone has vacated the spot #',
+        companyPhone: '<br>Company: ...<br>Phone: ...<br>',
+        occupied: 'Occupied',
+        available: 'Available',
+        since: ' since '
+    };
+
+    var lang = srp;
+
     let apiRoot = 'https://api.parking-pilot.com/';
     let apiKey = '?api_key=4B160CD3C5BD53B146571C440F11D1CB';
     let leftCam = 'http://10.0.16.46/jpg/image.jpg';
@@ -42,7 +68,7 @@
             var errorText = JSON.parse(request.responseText).error;
             $(".jconfirm").remove();
             $.confirm({
-                title: 'GREŠKA!',
+                title: lang.error,
                 content: errorText,
                 theme: 'supervan',
                 backgroundDismiss: 'true',
@@ -58,8 +84,8 @@
             } else {
                 $(".jconfirm").remove();
                 $.confirm({
-                    title: 'GREŠKA!',
-                    content: 'Desila se greška u sistemu, pokušajte ponovo.',
+                    title: lang.error,
+                    content: lang.errorDesc,
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -83,8 +109,8 @@
                 var date = new Date(response.last_change * 1000);
                 var dateString = '' + date.getFullYear() + '.' + ('0' + (date.getMonth() + 1)).slice(-2) + '.' + ('0' + date.getDate()).slice(-2) + '. ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
                 $.confirm({
-                    title: 'MESTO ' + idSpace,
-                    content: `<br><img id="snapshot" src="` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `');}, 2000);"><br>` + `<br>Kompanija: ...<br>Telefon: ...<br>` + (response.occupied === true ? 'Zauzeto' : 'Slobodno') + ' od ' + dateString,
+                    title: lang.spot + idSpace,
+                    content: `<br><img id="snapshot" src="` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `');}, 2000);"><br>` + /*lang.companyPhone*/ `<br>` + (response.occupied === true ? lang.occupied : lang.available) + lang.since + dateString,
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -109,8 +135,8 @@
         for (var i = 0; i < mostRecentResponse.length; i++)
             if (mostRecentResponse[i].occupied == false && response[i].occupied == true) {
                 $.confirm({
-                    title: '<span class="alert">MESTO ' + response[i].xml_id + '</span>',
-                    content: '<embed src="beep.wav" autostart="false" volume="200" width="0" height="0" id="beep" enablejavascript="true"><span class="alert">Neko je upravo zauzeo mesto ' + response[i].xml_id + '!</span>',
+                    title: '<span class="alert">' + lang.spot + response[i].xml_id + '</span>',
+                    content: '<embed src="beep.wav" autostart="false" volume="200" width="0" height="0" id="beep" enablejavascript="true"><span class="alert">' + lang.occupiedTxt + response[i].xml_id + '!</span>',
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -127,8 +153,8 @@
                 //$('.jconfirm.jconfirm-supervan .jconfirm-bg:has(span.alert)').addClass('has-alert');
             } else if (mostRecentResponse[i].occupied == true && response[i].occupied == false) {
                 $.confirm({
-                    title: '<span class="notification">MESTO ' + response[i].xml_id + '</span>',
-                    content: '<embed src="clink.wav" autostart="false" volume="200" width="0" height="0" id="clink" enablejavascript="true"><span class="notification">Neko je upravo oslobodio mesto ' + response[i].xml_id + '.</span>',
+                    title: '<span class="notification">' + lang.spot + response[i].xml_id + '</span>',
+                    content: '<embed src="clink.wav" autostart="false" volume="200" width="0" height="0" id="clink" enablejavascript="true"><span class="notification">' + lang.availableTxt + response[i].xml_id + '.</span>',
                     theme: 'supervan',
                     backgroundDismiss: 'true',
                     buttons: {
@@ -186,6 +212,13 @@
         },
         true, null
     );
+
+    P.langChanged = function () {
+        if ($('.language input:checked').val() == 'srp')
+            lang = srp;
+        if ($('.language input:checked').val() == 'eng')
+            lang = eng;
+    };
 
     global.$P = P;
 

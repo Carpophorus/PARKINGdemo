@@ -101,6 +101,23 @@ body {
     background-color: #0c3;
 }
 
+.language {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0 4vh 3vh 0;
+    border-bottom-right-radius: 3vh;
+    background-color: #ccc;
+    font-family: 'Russo One', sans-serif;
+    color: #555;
+    z-index: 1000;
+}
+
+.language input {
+    display: inline-block;
+    margin: 3vh 0 0 3vh;
+}
+
 @keyframes colorPulse {
     0% {background-color: #0c3;}
     20% {background-color: #0c3;}
