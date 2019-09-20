@@ -111,11 +111,14 @@ body {
     font-family: 'Russo One', sans-serif;
     color: #555;
     z-index: 1000;
+    font-size: 3vh;
 }
 
 .language input {
     display: inline-block;
     margin: 3vh 0 0 3vh;
+    width: 2vh;
+    height: 2vh;
 }
 
 @keyframes colorPulse {
