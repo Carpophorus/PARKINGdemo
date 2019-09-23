@@ -129,13 +129,13 @@
         );
     };
 
-    P.showDetails = function(time) {
+    P.showDetails = function(time, idSpace, occupied) {
         $(".jconfirm").remove();
         var date = new Date(time * 1000);
         var dateString = '' + date.getFullYear() + '.' + ('0' + (date.getMonth() + 1)).slice(-2) + '.' + ('0' + date.getDate()).slice(-2) + '. ' + ('0' + date.getHours()).slice(-2) + ':' + ('0' + date.getMinutes()).slice(-2) + ':' + ('0' + date.getSeconds()).slice(-2);
         $.confirm({
             title: lang.spot + idSpace,
-            content: `<br><img id="snapshot" src="` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `');}, 2000);"><br>` + /*lang.companyPhone*/ `<br>` + (response.occupied === true ? lang.occupied : lang.available) + lang.since + dateString,
+            content: `<br><img id="snapshot" src="` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `" width="500" height="auto" onclick="if ($('#snapshot').attr('width') == 500) $('#snapshot').attr('width', '` + window.innerWidth + `'); else $('#snapshot').attr('width', 500);" onload="setTimeout(function() {$('#snapshot').attr('src', '` + (idSpace == 1 || idSpace == 2 || idSpace == 10 || idSpace == 12 || idSpace == 16 || idSpace == 17 ? rightCam : leftCam) + `');}, 2000);"><br>` + /*lang.companyPhone*/ `<br>` + (occupied === true ? lang.occupied : lang.available) + lang.since + dateString,
             theme: 'supervan',
             backgroundDismiss: 'true',
             buttons: {
@@ -205,22 +205,22 @@
                 processResponse(array);
                 var html = '';
                 for(var i = 0; i < 9; i++)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id */ + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id */ + ', ' + array[i].xml_id + ', ' + array[i].occupied + ');">' + array[i].xml_id + '</div>';
                 html += '<br>';
                 for(var s = 0; s < 9; s++)
                     html += '<div class="v-space"></div>';
                 html += '<br>';
                 for(i = 16; i > 11; i--)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id */ + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id */ + ', ' + array[i].xml_id + ', ' + array[i].occupied + ');">' + array[i].xml_id + '</div>';
                 for(s = 0; s < 2; s++)
                     html += '<div class="v-space"></div>';
                 for(i = 10; i > 8; i--)
-                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id */ + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="v ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id */ + ', ' + array[i].xml_id + ', ' + array[i].occupied + ');">' + array[i].xml_id + '</div>';
                 html += '<br><div class="square-space"></div>';
                 for(i = 17; i < 19; i++)
-                    html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id + ', ' + array[i].xml_id */ + ');">' + array[i].xml_id + '</div>';
+                    html += '<div class="h ' + (array[i].occupied === true ? 'occupied' : 'free') + (array[i].occupied != array[i].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[i].last_change /* + '" onclick="$P.getFullStatus(' + array[i].id */ + ', ' + array[i].xml_id + ', ' + array[i].occupied + ');">' + array[i].xml_id + '</div>';
                 html += '<div class="h-space"></div>';
-                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + (array[11].occupied != array[11].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[11].last_change /* + '" onclick="$P.getFullStatus(' + array[11].id + ', ' + array[11].xml_id */ + ');">' + array[11].xml_id + '</div>';
+                html += '<div class="h ' + (array[11].occupied === true ? 'occupied' : 'free') + (array[11].occupied != array[11].occupied_preliminary ? ' transitioning' : '') + '" onclick="$P.showDetails(' + array[11].last_change /* + '" onclick="$P.getFullStatus(' + array[11].id */ + ', ' + array[11].xml_id + ', ' + array[11].occupied + ');">' + array[11].xml_id + '</div>';
                 $('.parking').html(html);
             },
             true, null
